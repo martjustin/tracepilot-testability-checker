@@ -1,18 +1,12 @@
 import { analyzeStory, countWords, formatReport, MAX_STORY_LENGTH, MIN_WORD_COUNT } from "./analyzer.js";
-
-const sampleStory = `As a returning customer with an existing account, I want to reset my password so that I can regain access if I forget it.
-
-Acceptance criteria:
-- Given I enter the email address for an existing account, when I request a password reset, then the system sends a reset email and shows a confirmation message.
-- Given I open a valid reset link, when I submit a new password that meets the password rules, then my password is updated and I can log in with the new password.
-- Given the reset link is expired or already used, when I try to submit a new password, then the system blocks the reset and explains how to request a new link.
-- Given I enter an email address that is not registered, when I request a reset, then the system shows the same neutral confirmation message without revealing whether the account exists.`;
+import { sampleStories } from "./sample-stories.js";
 
 const state = {
   story: "",
   reports: [],
   loadingTimer: null,
-  loadingIndex: 0
+  loadingIndex: 0,
+  exampleIndex: 0
 };
 
 const messages = ["Reading your story...", "Checking acceptance criteria...", "Looking for edge paths...", "Drafting Playwright scenario titles..."];
@@ -27,6 +21,7 @@ const elements = {
   loading: document.querySelector("#loading-state"),
   loadingMessage: document.querySelector("#loading-message"),
   results: document.querySelector("#results-area"),
+  examples: document.querySelector("#examples-grid"),
   template: document.querySelector("#result-template"),
   waitlist: document.querySelector("#waitlist-form"),
   waitlistEmail: document.querySelector("#waitlist-email"),
@@ -37,6 +32,7 @@ bootstrap();
 
 function bootstrap() {
   hydrateSharedResult();
+  renderExamples();
   elements.storyInput.addEventListener("input", handleInput);
   elements.analyze.addEventListener("click", runAnalysis);
   elements.example.addEventListener("click", loadExample);
@@ -55,9 +51,42 @@ function handleInput() {
 }
 
 function loadExample() {
-  elements.storyInput.value = sampleStory;
+  const sample = sampleStories[state.exampleIndex % sampleStories.length];
+  state.exampleIndex += 1;
+  loadSample(sample.id, true);
+}
+
+function loadSample(sampleId, shouldFocus = false) {
+  const sample = sampleStories.find((item) => item.id === sampleId) || sampleStories[0];
+  elements.storyInput.value = sample.story;
+  elements.example.textContent = `Try another example`;
   handleInput();
-  elements.storyInput.focus();
+  if (shouldFocus) elements.storyInput.focus();
+}
+
+function renderExamples() {
+  if (!elements.examples) return;
+  elements.examples.innerHTML = "";
+  sampleStories.forEach((sample) => {
+    const card = document.createElement("article");
+    card.className = "example-card";
+    card.innerHTML = `
+      <div class="example-card-top">
+        <span></span>
+        <strong></strong>
+      </div>
+      <h3></h3>
+      <p></p>
+      <button type="button"></button>
+    `;
+    card.querySelector(".example-card-top span").textContent = sample.domain;
+    card.querySelector(".example-card-top strong").textContent = sample.expectedBand;
+    card.querySelector("h3").textContent = sample.title;
+    card.querySelector("p").textContent = sample.relevance;
+    card.querySelector("button").textContent = "Load story";
+    card.querySelector("button").addEventListener("click", () => loadSample(sample.id, true));
+    elements.examples.appendChild(card);
+  });
 }
 
 function clearStory() {

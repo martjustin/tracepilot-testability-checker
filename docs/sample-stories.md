@@ -69,3 +69,15 @@ Why it matters:
 - Multiple explicit acceptance criteria.
 - Positive, negative, privacy, expiry, and validation paths.
 - Good candidate for TracePilot Alpha scenario planning.
+
+## Additional Relevance Examples
+
+These examples are also available inside the app through the example gallery.
+
+| Domain | Example | Expected Band | Why It Proves Relevance |
+| --- | --- | --- | --- |
+| Ecommerce | Promo code checkout | Fair | Reveals expiry, stacking, minimum-cart, and invalid-code gaps that can create revenue leakage. |
+| Fintech | KYC document upload | Strong | Shows how clear validation and review states can move directly into scenario planning. |
+| HR Tech | PTO approval workflow | Strong | Connects permission checks, notifications, status transitions, and audit history to regression coverage. |
+| Marketplace | Buyer dispute intake | Strong | Turns support intake, evidence upload, eligibility windows, and attachment limits into testable behavior. |
+| Edtech | Assessment retake eligibility | Good | Surfaces policy-driven edge cases such as retake windows and exhausted attempts. |

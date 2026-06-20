@@ -35,6 +35,7 @@ GitHub Pages is configured through `.github/workflows/deploy-pages.yml`. Every p
 - Copy-to-clipboard report.
 - Static share links encoded in the URL hash.
 - Side-by-side latest and previous results after re-checking.
+- In-app example gallery across SaaS, ecommerce, fintech, HR tech, marketplace, identity, and edtech stories.
 - Inline TracePilot Alpha waitlist prompt with local-only demo capture.
 
 ## Production notes

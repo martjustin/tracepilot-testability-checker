@@ -475,6 +475,78 @@ h3 {
   padding-top: 28px;
 }
 
+.examples-band {
+  padding-top: 24px;
+}
+
+.examples-band .section-heading {
+  margin-bottom: 14px;
+}
+
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.example-card {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 14px 42px rgba(21, 23, 29, 0.07);
+}
+
+.example-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.example-card-top span,
+.example-card-top strong {
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  border-radius: 999px;
+}
+
+.example-card-top span {
+  color: var(--teal-dark);
+  background: rgba(221, 246, 233, 0.72);
+}
+
+.example-card-top strong {
+  color: #405166;
+  background: var(--slate-soft);
+}
+
+.example-card h3 {
+  line-height: 1.18;
+}
+
+.example-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.example-card button {
+  justify-self: start;
+  min-height: 38px;
+  padding: 0 12px;
+  color: var(--ink);
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
 .panel {
   padding: clamp(18px, 3vw, 28px);
 }
@@ -961,6 +1033,10 @@ input:focus {
   .method-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .examples-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
@@ -1014,6 +1090,7 @@ input:focus {
   }
 
   .dimension-grid,
+  .examples-grid,
   .method-grid {
     grid-template-columns: 1fr;
   }
