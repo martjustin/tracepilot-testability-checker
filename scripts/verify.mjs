@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { analyzeStory } from "../src/analyzer.js";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const requiredFiles = ["index.html", "src/main.js", "src/analyzer.js", "src/styles.css"];
+const requiredFiles = ["index.html", "src/main.js", "src/analyzer.js", "src/styles.css", "package.json"];
 
 for (const file of requiredFiles) {
   if (!existsSync(join(root, file))) {
@@ -16,6 +16,7 @@ for (const file of requiredFiles) {
 const html = await readFile(join(root, "index.html"), "utf8");
 const css = await readFile(join(root, "src/styles.css"), "utf8");
 const js = await readFile(join(root, "src/main.js"), "utf8");
+const pkg = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 
 for (const marker of ["Check testability", "TracePilot QA Alpha", "Join the Alpha waitlist", "Try an example"]) {
   if (!html.includes(marker)) throw new Error(`Missing UI marker: ${marker}`);
@@ -27,6 +28,8 @@ for (const marker of ["result-compare", "story-map", "score-card", "inline-alpha
 
 if (!js.includes("navigator.clipboard")) throw new Error("Copy-to-clipboard behavior is missing.");
 if (!js.includes("#result=")) throw new Error("Share-link behavior is missing.");
+if (!pkg.scripts?.build?.includes("vite build")) throw new Error("Build script must create a Vite production bundle.");
+if (!pkg.scripts?.preview?.includes("vite preview")) throw new Error("Preview script must serve the production bundle.");
 
 const result = analyzeStory(`As an admin with billing permissions, I want to refund a paid invoice so that customer support can resolve duplicate charges.
 Acceptance criteria:

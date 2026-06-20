@@ -8,11 +8,7 @@ Standalone lead magnet for TracePilot QA. It checks whether a pasted user story 
 npm run dev
 ```
 
-Open the URL printed by the server. The default is `http://127.0.0.1:4173`, but you can change it:
-
-```bash
-$env:PORT="4174"; npm run dev
-```
+Open the Vite URL printed by the server. The default is usually `http://127.0.0.1:5173`.
 
 ## Verify
 
@@ -21,6 +17,12 @@ npm run test
 npm run build
 npm run samples
 ```
+
+`npm run build` creates a deployable responsive production bundle in `dist/`. Use `npm run preview` to inspect the built app locally.
+
+## Deployment
+
+GitHub Pages is configured through `.github/workflows/deploy-pages.yml`. Every push to `main` installs dependencies, runs tests, validates sample story bands, builds the responsive bundle, and deploys `dist/`.
 
 ## MVP behavior
 
@@ -37,7 +39,7 @@ npm run samples
 
 ## Production notes
 
-The current build is dependency-light and uses a deterministic local analyzer so it can be reviewed without external services. A production Next.js version should replace the local analyzer call with `POST /api/analyze`, validate structured model output, add IP-based rate limiting, store shared results by UUID, and send waitlist emails to Supabase, Resend, or Loops.
+The current build uses Vite for a responsive production bundle and a deterministic local analyzer so it can be reviewed without external services. A production Next.js or serverless version should replace the local analyzer call with `POST /api/analyze`, validate structured model output, add IP-based rate limiting, store shared results by UUID, and send waitlist emails to Supabase, Resend, or Loops.
 
 ## Launch review
 

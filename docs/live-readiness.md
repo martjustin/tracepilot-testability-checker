@@ -31,7 +31,7 @@ The app is ready to publish as a static proof-of-demand lead magnet or private b
 - Store waitlist emails in Supabase, Resend, Loops, or another real destination.
 - Add privacy copy that states pasted stories are not stored unless the user creates a share link.
 - Add basic analytics for unique visitors, completed analyses, waitlist conversion, copy/share events, and re-check rate.
-- Add a launch deployment target such as Vercel, Netlify, or GitHub Pages.
+- Add server-backed deployment for analysis, share storage, waitlist capture, and analytics. The responsive frontend bundle itself is now buildable with Vite.
 
 ## Recommendation
 
@@ -44,5 +44,6 @@ Last local verification:
 ```text
 npm run test   -> passing
 npm run build  -> passing
+npm run samples -> passing
 browser QA     -> desktop and mobile pass, no horizontal overflow
 ```
