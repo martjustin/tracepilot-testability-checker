@@ -1,0 +1,25 @@
+{
+  "name": "tracepilot-testability-checker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TracePilot QA lead magnet that checks whether user stories are testable before regression automation begins.",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "preview": "node scripts/dev-server.mjs",
+    "build": "node scripts/verify.mjs",
+    "samples": "node scripts/check-samples.mjs",
+    "test": "node --test src/analyzer.test.mjs"
+  },
+  "keywords": [
+    "tracepilot",
+    "qa",
+    "playwright",
+    "testability",
+    "user-stories"
+  ],
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  }
+}

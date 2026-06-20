@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TracePilot Story Testability Checker</title>
+    <meta
+      name="description"
+      content="Paste a user story and get a strict testability score, missing acceptance criteria, edge cases, and Playwright scenario ideas in under 30 seconds."
+    />
+    <link rel="preload" href="./src/styles.css" as="style" />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#checker">Skip to checker</a>
+    <div class="page-shell">
+      <header class="topbar" aria-label="TracePilot navigation">
+        <a class="brand" href="#top" aria-label="TracePilot Testability Checker home">
+          <span class="brand-glyph" aria-hidden="true">TP</span>
+          <span>
+            <strong>TracePilot</strong>
+            <small>Story Testability Checker</small>
+          </span>
+        </a>
+        <nav aria-label="Page sections">
+          <a href="#checker">Check</a>
+          <a href="#alpha">Alpha</a>
+          <a href="#method">Method</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Free QA readiness scan</p>
+            <h1 id="hero-title">Find the story gaps that become flaky regression gaps.</h1>
+            <p class="hero-lede">
+              Paste a user story. Get a strict score, missing test signals, edge cases, and Playwright
+              scenario titles before the team starts building around vague acceptance criteria.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-link" href="#checker">Check a story</a>
+              <a class="ghost-link" href="#alpha">Preview TracePilot Alpha</a>
+            </div>
+            <div class="trust-strip" aria-label="Tool guardrails">
+              <span>No signup wall</span>
+              <span>Strict scoring</span>
+              <span>No fake UI assumptions</span>
+            </div>
+          </div>
+
+          <div class="story-map" aria-label="TracePilot requirement coverage map">
+            <div class="map-panel">
+              <div class="map-topline">
+                <span>Coverage Cartography</span>
+                <strong>Story -> Criteria -> Scenarios</strong>
+              </div>
+              <div class="map-canvas" aria-hidden="true">
+                <span class="node node-story">Story</span>
+                <span class="node node-criteria">Criteria</span>
+                <span class="node node-edge">Edge paths</span>
+                <span class="node node-risk">Risk</span>
+                <span class="node node-playwright">Playwright</span>
+                <svg viewBox="0 0 640 440" role="img" aria-label="Trace links from story to test scenarios">
+                  <defs>
+                    <linearGradient id="route" x1="0" x2="1">
+                      <stop offset="0" stop-color="#16a085" />
+                      <stop offset="0.55" stop-color="#e4a11b" />
+                      <stop offset="1" stop-color="#3f5efb" />
+                    </linearGradient>
+                    <filter id="glow">
+                      <feGaussianBlur stdDeviation="6" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+                  <path class="route route-a" d="M70 92 C170 52 238 96 312 168 S464 290 564 236" />
+                  <path class="route route-b" d="M84 305 C172 225 238 275 318 238 S464 125 565 156" />
+                  <path class="route route-c" d="M142 154 C255 174 240 350 374 348 S505 330 578 372" />
+                  <circle class="pulse" cx="70" cy="92" r="8" />
+                  <circle class="pulse delay-one" cx="318" cy="238" r="8" />
+                  <circle class="pulse delay-two" cx="565" cy="156" r="8" />
+                </svg>
+              </div>
+              <div class="map-caption">
+                <strong>Competitors generate tests.</strong>
+                <span>TracePilot asks whether the requirement deserves automation yet.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="checker" class="checker-grid" aria-labelledby="checker-title">
+          <div class="input-panel panel">
+            <div class="section-heading">
+              <p class="eyebrow">The lead magnet</p>
+              <h2 id="checker-title">Paste one user story</h2>
+              <p>
+                Use a Jira-style story, INVEST format, or plain paragraph. The checker stays strict by design:
+                a 70 should feel like a useful warning, not a vanity score.
+              </p>
+            </div>
+
+            <label class="story-label" for="story-input">
+              User story
+              <span id="character-count">0 / 4000</span>
+            </label>
+            <textarea
+              id="story-input"
+              maxlength="4000"
+              placeholder="As a returning customer, I want to reset my password so that I can regain access to my account..."
+              aria-describedby="input-help input-error"
+            ></textarea>
+            <p id="input-help" class="input-help">
+              Minimum 20 words. Do not paste secrets, credentials, or customer data.
+            </p>
+            <p id="input-error" class="form-error" role="alert"></p>
+
+            <div class="checker-actions">
+              <button id="analyze-button" class="primary-button" type="button" disabled>
+                Check testability
+              </button>
+              <button id="example-button" class="secondary-button" type="button">Try an example</button>
+              <button id="clear-button" class="icon-button" type="button" aria-label="Clear story">Clear</button>
+            </div>
+
+            <div id="loading-state" class="loading-state" hidden>
+              <span class="spinner" aria-hidden="true"></span>
+              <strong id="loading-message">Reading your story...</strong>
+            </div>
+          </div>
+
+          <aside class="intel-panel panel" aria-label="Market positioning">
+            <p class="eyebrow">Market gap</p>
+            <h2>Most AI testing tools start too late.</h2>
+            <div class="position-stack">
+              <article>
+                <span>Common pitch</span>
+                <strong>Generate, run, heal</strong>
+                <p>Useful after intent is clear, risky when requirements are still mushy.</p>
+              </article>
+              <article>
+                <span>TracePilot wedge</span>
+                <strong>Readiness before regression</strong>
+                <p>Score the story first, then turn approved intent into coverage.</p>
+              </article>
+              <article>
+                <span>Psychology</span>
+                <strong>Immediate diagnostic value</strong>
+                <p>A low score creates urgency. A higher score creates confidence and momentum.</p>
+              </article>
+            </div>
+          </aside>
+        </section>
+
+        <section id="results-area" class="results-area" aria-live="polite"></section>
+
+        <section id="alpha" class="alpha-band" aria-labelledby="alpha-title">
+          <div>
+            <p class="eyebrow">TracePilot QA Alpha</p>
+            <h2 id="alpha-title">From strong stories to reviewed Playwright regression coverage.</h2>
+            <p>
+              The checker is the front door. TracePilot Alpha will convert approved acceptance criteria into
+              scenario plans, fixture ideas, reviewed Playwright drafts, and requirement coverage reports.
+            </p>
+          </div>
+          <form id="waitlist-form" class="waitlist-form">
+            <label for="waitlist-email">Join the Alpha waitlist</label>
+            <div>
+              <input id="waitlist-email" type="email" placeholder="qa.lead@company.com" autocomplete="email" />
+              <button type="submit">Join waitlist</button>
+            </div>
+            <p id="waitlist-message" role="status">No modal. No lockout. Just the next step when the diagnostic clicks.</p>
+          </form>
+        </section>
+
+        <section id="method" class="method-grid" aria-labelledby="method-title">
+          <div class="section-heading">
+            <p class="eyebrow">Scoring model</p>
+            <h2 id="method-title">Strict by design, readable by everyone</h2>
+          </div>
+          <article>
+            <strong>Actor clarity</strong>
+            <span>15 pts</span>
+            <p>Does the story identify who needs the behavior?</p>
+          </article>
+          <article>
+            <strong>Preconditions</strong>
+            <span>10 pts</span>
+            <p>Does it say what must be true before testing begins?</p>
+          </article>
+          <article>
+            <strong>Acceptance criteria</strong>
+            <span>25 pts</span>
+            <p>Are outcomes explicit, observable, and testable?</p>
+          </article>
+          <article>
+            <strong>Expected outcomes</strong>
+            <span>20 pts</span>
+            <p>Can a tester decide pass or fail without guessing?</p>
+          </article>
+          <article>
+            <strong>Negative paths</strong>
+            <span>15 pts</span>
+            <p>Are failure, invalid, expired, or unauthorized paths covered?</p>
+          </article>
+          <article>
+            <strong>Vague language</strong>
+            <span>15 pts</span>
+            <p>Does it avoid words like fast, easy, properly, and user-friendly?</p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <template id="result-template">
+      <article class="result-panel panel">
+        <div class="result-header">
+          <div>
+            <p class="eyebrow result-kicker">Latest check</p>
+            <h2>Testability report</h2>
+            <p class="confidence-note"></p>
+          </div>
+          <div class="score-card">
+            <strong class="score-value">0</strong>
+            <span class="score-label">Poor</span>
+            <div class="score-bar"><span></span></div>
+          </div>
+        </div>
+        <div class="dimension-grid"></div>
+        <div class="report-columns">
+          <section>
+            <div class="section-minihead">
+              <h3>Quality issues</h3>
+              <span class="issue-count"></span>
+            </div>
+            <div class="issues-list"></div>
+          </section>
+          <section>
+            <div class="section-minihead">
+              <h3>Edge cases</h3>
+              <span>3-7 suggested</span>
+            </div>
+            <ol class="edge-list"></ol>
+          </section>
+          <section>
+            <div class="section-minihead">
+              <h3>Scenario titles</h3>
+              <span>No full code yet</span>
+            </div>
+            <div class="scenario-list"></div>
+          </section>
+        </div>
+        <div class="result-actions">
+          <button class="copy-button" type="button">Copy formatted report</button>
+          <button class="share-button" type="button">Create share link</button>
+          <span class="action-message" role="status"></span>
+        </div>
+        <div class="inline-alpha">
+          <div>
+            <strong>TracePilot QA turns strong stories into reviewed Playwright regression tests.</strong>
+            <span>Join the Alpha waitlist to see this report become coverage, fixtures, CI, and PR comments.</span>
+          </div>
+          <a href="#alpha">Join waitlist</a>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
