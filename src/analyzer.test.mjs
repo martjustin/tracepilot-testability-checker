@@ -19,6 +19,8 @@ Acceptance criteria:
 
   assert.equal(result.lowConfidence, false);
   assert.ok(result.score >= 70, `expected >= 70, got ${result.score}`);
+  assert.ok(result.reasons.length >= 2);
+  assert.ok(result.reasons.some((reason) => reason.includes("scenario planning") || reason.includes("regression")));
   assert.ok(result.scenarios.length >= 3);
   assert.ok(result.scenarios.every((scenario) => ["positive", "negative", "edge"].includes(scenario.type)));
 });
@@ -35,6 +37,7 @@ test("formats a copyable plain-text report", () => {
   assert.ok(countWords(story) >= MIN_WORD_COUNT);
   const report = formatReport(story, analyzeStory(story));
   assert.match(report, /TracePilot Story Testability Report/);
+  assert.match(report, /Why this score:/);
   assert.match(report, /Dimensions:/);
   assert.match(report, /Suggested edge cases:/);
 });
