@@ -142,6 +142,14 @@ function renderReports() {
       dimensionGrid.appendChild(item);
     });
 
+    const reasonList = node.querySelector(".reason-list");
+    const reasons = report.result.reasons?.length ? report.result.reasons : ["The score reflects the requirement checks shown below."];
+    reasons.forEach((reason) => {
+      const item = document.createElement("li");
+      item.textContent = reason;
+      reasonList.appendChild(item);
+    });
+
     const issuesList = node.querySelector(".issues-list");
     node.querySelector(".issue-count").textContent = `${report.result.issues.length} shown`;
     if (report.result.issues.length) {

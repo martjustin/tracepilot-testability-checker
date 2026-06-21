@@ -100,6 +100,11 @@ export function analyzeStory(rawStory) {
         negative: 0,
         language: 0
       }),
+      reasons: [
+        "The text is too short to identify a reliable actor, starting state, acceptance criteria, or expected result.",
+        "TracePilot needs enough requirement detail to separate a testable behavior from a general product idea.",
+        "Add at least one pass condition and one failure condition before using this story for regression planning."
+      ],
       issues: [
         {
           severity: "Critical",
@@ -136,20 +141,22 @@ export function analyzeStory(rawStory) {
 
   const edgeCases = buildEdgeCases(lower).slice(0, 7);
   const scenarios = buildScenarios(story, lower, acceptance.criteria).slice(0, 4);
+  const dimensions = buildDimensions({
+    actor: actor.score,
+    preconditions: preconditions.score,
+    acceptance: acceptance.score,
+    outcomes: outcomes.score,
+    negative: negative.score,
+    language: language.score
+  });
 
   return {
     score,
     label: labelForScore(score),
     lowConfidence: false,
     confidenceNote: confidenceFor(score, issues.length),
-    dimensions: buildDimensions({
-      actor: actor.score,
-      preconditions: preconditions.score,
-      acceptance: acceptance.score,
-      outcomes: outcomes.score,
-      negative: negative.score,
-      language: language.score
-    }),
+    dimensions,
+    reasons: buildReportReasons(score, dimensions, issues),
     issues,
     edgeCases,
     scenarios
@@ -373,6 +380,52 @@ function confidenceFor(score, issueCount) {
   return "Not ready for reliable testing. The story needs clearer criteria before automation.";
 }
 
+function buildReportReasons(score, dimensions, issues) {
+  const reasons = [];
+  const weakest = [...dimensions].sort((a, b) => a.score / a.max - b.score / b.max).slice(0, 2);
+  const strongest = [...dimensions].sort((a, b) => b.score / b.max - a.score / a.max).slice(0, 2);
+
+  if (score >= 80) {
+    reasons.push("The story has enough structure to begin scenario planning because the main actor, expected result, and risk paths are visible.");
+  } else if (score >= 60) {
+    reasons.push("The story is testable, but the weaker dimensions should be tightened before generating full regression code.");
+  } else if (score >= 40) {
+    reasons.push("The story describes useful intent, but testers would still need to guess important setup, outcome, or failure behavior.");
+  } else {
+    reasons.push("The story is not ready for reliable testing because the report found gaps that would create inconsistent test design.");
+  }
+
+  weakest.forEach((dimension) => {
+    const ratio = dimension.score / dimension.max;
+    if (ratio < 0.7) {
+      reasons.push(reasonForWeakDimension(dimension));
+    }
+  });
+
+  if (issues.length) {
+    const criticalCount = issues.filter((issue) => issue.severity === "Critical").length;
+    const warningCount = issues.filter((issue) => issue.severity === "Warning").length;
+    if (criticalCount) reasons.push(`${criticalCount} critical issue${criticalCount === 1 ? "" : "s"} must be fixed before the story should feed regression automation.`);
+    if (warningCount && !criticalCount) reasons.push(`${warningCount} warning${warningCount === 1 ? "" : "s"} should be resolved to reduce missed edge cases.`);
+  } else {
+    reasons.push(`The strongest signals are ${strongest.map((dimension) => dimension.label.toLowerCase()).join(" and ")}, so TracePilot can move from analysis to reviewed scenario planning.`);
+  }
+
+  return [...new Set(reasons)].slice(0, 5);
+}
+
+function reasonForWeakDimension(dimension) {
+  const reasons = {
+    actor: "Actor clarity is weak, so permission rules and user intent are harder to test.",
+    preconditions: "Preconditions are thin, so a tester may not know what account state, data, or permissions must exist before the test starts.",
+    acceptance: "Acceptance criteria need sharper pass/fail statements before TracePilot can map scenarios to requirements.",
+    outcomes: "Expected outcomes need visible proof, such as a message, saved state, status change, email, or redirect.",
+    negative: "Negative paths are under-specified, so the story may only protect the happy path.",
+    language: "Vague wording must be replaced with measurable behavior so the report does not reward subjective claims."
+  };
+  return reasons[dimension.key] || `${dimension.label} needs more detail before automation.`;
+}
+
 function sortIssues(a, b) {
   const rank = { Critical: 0, Warning: 1, Suggestion: 2 };
   return rank[a.severity] - rank[b.severity];
@@ -388,6 +441,9 @@ export function formatReport(story, result) {
     `Score: ${result.score}/100 (${result.label})`,
     ``,
     `Confidence note: ${result.confidenceNote}`,
+    ``,
+    `Why this score:`,
+    ...(result.reasons?.length ? result.reasons.map((reason) => `- ${reason}`) : [`- The score reflects the dimension checks below.`]),
     ``,
     `Dimensions:`,
     ...result.dimensions.map((dimension) => `- ${dimension.label}: ${dimension.score}/${dimension.max} (${dimension.status})`),

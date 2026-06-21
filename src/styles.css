@@ -1095,3 +1095,274 @@ input:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* Metallic gold redesign branch: premium diagnostic instrument skin */
+:root {
+  --ink: #f4efe2;
+  --muted: #bdb4a2;
+  --paper: #090909;
+  --panel: rgba(23, 23, 22, 0.86);
+  --line: rgba(224, 190, 112, 0.2);
+  --teal: #d7b46a;
+  --teal-dark: #f0cf82;
+  --amber: #d8a847;
+  --amber-soft: rgba(216, 168, 71, 0.18);
+  --red: #e1695d;
+  --red-soft: rgba(225, 105, 93, 0.14);
+  --blue: #c8c1ad;
+  --blue-soft: rgba(200, 193, 173, 0.12);
+  --green: #d7b46a;
+  --green-soft: rgba(215, 180, 106, 0.16);
+  --slate-soft: rgba(255, 255, 255, 0.08);
+  --shadow: 0 32px 90px rgba(0, 0, 0, 0.42);
+  --gold-line: rgba(240, 207, 130, 0.34);
+  --steel: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.025) 42%, rgba(240, 207, 130, 0.08));
+  --brushed: repeating-linear-gradient(105deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 9px);
+}
+
+body {
+  color: var(--ink);
+  background:
+    var(--brushed),
+    linear-gradient(115deg, #080807 0%, #15130f 42%, #0a0a0a 100%);
+}
+
+body::before {
+  background:
+    linear-gradient(90deg, rgba(240, 207, 130, 0.08), transparent 18%, transparent 82%, rgba(240, 207, 130, 0.07)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 34px);
+}
+
+.topbar,
+.panel,
+.map-panel,
+.alpha-band,
+.method-grid article,
+.example-card,
+.result-panel {
+  color: var(--ink);
+  background:
+    var(--steel),
+    linear-gradient(145deg, rgba(26, 25, 23, 0.96), rgba(12, 12, 11, 0.92));
+  border-color: var(--line);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+    var(--shadow);
+}
+
+.brand-glyph {
+  color: #18130a;
+  background:
+    linear-gradient(135deg, #fff1b8 0%, #d1a64c 38%, #76531f 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 14px 30px rgba(216, 168, 71, 0.2);
+}
+
+.brand strong,
+h1,
+h2,
+h3,
+.map-caption strong,
+.position-stack strong,
+.dimension-grid strong,
+.issue-item strong,
+.scenario-item strong,
+.inline-alpha strong,
+.method-grid strong,
+.story-label {
+  color: var(--ink);
+}
+
+.brand small,
+.hero-lede,
+.section-heading p,
+.alpha-band p,
+.intel-panel p,
+.method-grid p,
+.position-stack p,
+.confidence-note,
+.empty-state,
+.example-card p,
+.issue-item p,
+.scenario-item small,
+.input-help {
+  color: var(--muted);
+}
+
+.eyebrow {
+  color: var(--teal-dark);
+}
+
+.topbar nav a,
+.ghost-link,
+.secondary-button,
+.icon-button,
+.result-actions button,
+.example-card button {
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
+    rgba(255, 255, 255, 0.035);
+  border-color: rgba(240, 207, 130, 0.18);
+}
+
+.topbar nav a:hover,
+.topbar nav a:focus-visible,
+.ghost-link:hover,
+.secondary-button:hover,
+.icon-button:hover,
+.result-actions button:hover,
+.example-card button:hover {
+  background:
+    linear-gradient(135deg, rgba(240, 207, 130, 0.16), rgba(255, 255, 255, 0.04));
+  border-color: rgba(240, 207, 130, 0.42);
+}
+
+.primary-link,
+.primary-button,
+.waitlist-form button,
+.inline-alpha a {
+  color: #171008;
+  background:
+    linear-gradient(135deg, #fff2bd 0%, #d8a847 46%, #8a6429 100%);
+  border-color: rgba(255, 230, 164, 0.58);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.56),
+    0 18px 48px rgba(216, 168, 71, 0.22);
+}
+
+.trust-strip span,
+.example-card-top span,
+.example-card-top strong,
+.scenario-item span,
+.issue-item > span {
+  border: 1px solid rgba(240, 207, 130, 0.18);
+}
+
+.trust-strip span,
+.example-card-top span {
+  color: #f3d58b;
+  background: rgba(216, 168, 71, 0.1);
+}
+
+.map-canvas {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 42%),
+    repeating-linear-gradient(90deg, rgba(240, 207, 130, 0.045) 0 1px, transparent 1px 44px),
+    linear-gradient(160deg, #121210, #050505);
+}
+
+.route {
+  stroke: #d8a847;
+}
+
+.node {
+  color: var(--ink);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035));
+  border-color: rgba(240, 207, 130, 0.28);
+}
+
+textarea,
+.waitlist-form input {
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(0, 0, 0, 0.28);
+  border-color: rgba(240, 207, 130, 0.22);
+}
+
+textarea::placeholder,
+.waitlist-form input::placeholder {
+  color: rgba(244, 239, 226, 0.48);
+}
+
+textarea:focus,
+input:focus {
+  border-color: rgba(240, 207, 130, 0.72);
+  box-shadow: 0 0 0 4px rgba(216, 168, 71, 0.16);
+}
+
+.dimension-grid article,
+.issue-item,
+.scenario-item,
+.edge-list li,
+.position-stack article {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+  border-color: rgba(240, 207, 130, 0.16);
+}
+
+.score-card {
+  background:
+    linear-gradient(145deg, rgba(240, 207, 130, 0.18), rgba(255, 255, 255, 0.04));
+  border-color: rgba(240, 207, 130, 0.36);
+}
+
+.score-value,
+.score-label {
+  color: #f1cf7a;
+}
+
+.score-bar,
+.mini-bar {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.score-bar span,
+.mini-bar span,
+.dimension-grid .mini-bar span {
+  background:
+    linear-gradient(90deg, #8a6429, #f0cf82 48%, #fff1b8);
+}
+
+.score-rationale {
+  margin: 18px 0;
+  padding: 16px;
+  background:
+    linear-gradient(135deg, rgba(240, 207, 130, 0.11), rgba(255, 255, 255, 0.035));
+  border: 1px solid rgba(240, 207, 130, 0.22);
+  border-radius: var(--radius);
+}
+
+.reason-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 20px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.reason-list li::marker {
+  color: #f0cf82;
+}
+
+.inline-alpha {
+  background:
+    var(--brushed),
+    linear-gradient(135deg, #181612, #050505);
+  border: 1px solid rgba(240, 207, 130, 0.24);
+}
+
+.method-grid span,
+.section-minihead span,
+.dimension-grid span,
+.dimension-grid small,
+.issue-item small,
+.action-message {
+  color: #d9bf7b;
+}
+
+.loading-state {
+  color: #f0cf82;
+  background: rgba(216, 168, 71, 0.1);
+  border-color: rgba(240, 207, 130, 0.2);
+}
+
+.spinner {
+  border-color: rgba(240, 207, 130, 0.18);
+  border-top-color: #f0cf82;
+}
